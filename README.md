@@ -1,6 +1,6 @@
 Ta chovendo hambúrguer game por 
 Lucas Tomasi Enderle (RA 1127823, email: lucas.enderle@hotmail.com)
-Ricardo Marin
+Ricardo Marin (RA 1130644, email: ricardo_k_marin@hotmail.com)
 
 Esse projeto teve como enfoque a criação de um game 2D, inspirado no filme Tá chovendo hambúrguer. 
 O jogo consiste basicamente da queda de um hambúrguer do céu, e o jogador tem o objetivo de comer os mesmos utilizando o personagem Flint,

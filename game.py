@@ -1,8 +1,5 @@
-from turtle import bgcolor
 import pygame
 import random
-
-from pyparsing import White
 
 pygame.init()
 altura = 480
@@ -12,7 +9,6 @@ pygameDisplay = pygame.display
 pygameDisplay.set_caption("Burger rain")
 bg = pygame.image.load("assets/background.png")
 bg_perdeu = pygame.image.load("assets/perdeu.png")
-
 
 gameDisplay = pygame.display.set_mode(tamanho)
 gameEvents = pygame.event
@@ -77,8 +73,8 @@ def main():
                 elif event.key == pygame.K_RIGHT:
                     rightPress = False
 
-
         if jogando == True:
+
             #aqui é a parte do jogo
             movimentoXPlayer = 0
             if rightPress:
@@ -92,7 +88,6 @@ def main():
                 posicaoXPlayer = 0
             elif posicaoXPlayer > largura - larguraPlayer:
                 posicaoXPlayer = largura - larguraPlayer
-            
 
             gameDisplay.blit(bg, (0,0))
             gameDisplay.blit(boneco, (posicaoXPlayer, posicaoYPlayer))
@@ -102,21 +97,22 @@ def main():
             texto = fonte.render("Pontos: "+str(pontos), True, white)
             gameDisplay.blit(texto, (20, 25))
 
+            # movimento do hambúrguer
             if direcao == True:
                 if movimentoY <= 480 - 68:
                     movimentoY = movimentoY + velocidade
                 else:
                     movimentoY = 0
                     movimentoX = random.randrange(0, largura)
-                    velocidade = velocidade + 1
+                    velocidade = velocidade + 0.5
                     pontosMorte -= 1
                     if pontosMorte == -3:
                         perdeu(pontos)
                         jogando = False
                     else:    
                         direcao = True
-            
-            
+        
+        #colisão do hambúrguer com o personagem    
         bonecoRect = boneco.get_rect()
         bonecoRect.x = posicaoXPlayer
         bonecoRect.y = posicaoYPlayer   
@@ -128,11 +124,9 @@ def main():
         if burgerRect.colliderect(bonecoRect) == True:
             movimentoY = 0
             movimentoX = random.randrange(0, largura)
-            velocidade = velocidade + 1
+            velocidade = velocidade + 0.5
             direcao = True
             pontos += 1
-
-
   
         pygameDisplay.update()
         clock.tick(60)
