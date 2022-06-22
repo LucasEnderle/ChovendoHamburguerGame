@@ -1,6 +1,15 @@
 import pygame
 import random
 
+# Adicionando um log ao jogo
+state = False
+nome = input('Nome: ')
+email = input('Email: ')
+log = open('log.txt','a')
+log.write(f'Nome: {nome}\nEmail: {email}\n')
+log.close()
+state = True
+
 pygame.init()
 altura = 480
 largura = 854
@@ -104,7 +113,7 @@ def main():
                 else:
                     movimentoY = 0
                     movimentoX = random.randrange(0, largura)
-                    velocidade = velocidade + 0.5
+                    velocidade = velocidade + 0.4
                     pontosMorte -= 1
                     if pontosMorte == -3:
                         perdeu(pontos)
@@ -124,7 +133,7 @@ def main():
         if burgerRect.colliderect(bonecoRect) == True:
             movimentoY = 0
             movimentoX = random.randrange(0, largura)
-            velocidade = velocidade + 0.5
+            velocidade = velocidade + 0.4
             direcao = True
             pontos += 1
   
