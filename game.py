@@ -1,5 +1,8 @@
+from turtle import bgcolor
 import pygame
 import random
+
+from pyparsing import White
 
 pygame.init()
 altura = 480
@@ -8,6 +11,7 @@ tamanho = (largura, altura)
 pygameDisplay = pygame.display
 pygameDisplay.set_caption("Burger rain")
 bg = pygame.image.load("assets/background.png")
+bg_perdeu = pygame.image.load("assets/perdeu.png")
 
 
 gameDisplay = pygame.display.set_mode(tamanho)
@@ -17,6 +21,21 @@ clock = pygame.time.Clock()
 icone = pygame.image.load("assets/burger.ico")
 pygameDisplay.set_icon(icone)
 
+white = (255, 255, 255)
+green = (34,139,34)
+
+def perdeu(pontos):
+    gameDisplay.blit(bg_perdeu, (0,0))
+    pygame.mixer.music.stop()
+    fonte = pygame.font.Font("freesansbold.ttf", 25)
+    texto = fonte.render("Você Perdeu com "+str(pontos) +" pontos!", True, green)
+    gameDisplay.blit(texto, (450, 90))
+    fonteContinue = pygame.font.Font("freesansbold.ttf", 20)
+    textoContinue = fonteContinue.render("press enter to restart", True, green)
+    gameDisplay.blit(textoContinue, (575,115))
+
+    pygameDisplay.update()
+
 def main():
     jogando = True
     rightPress = False
@@ -25,16 +44,18 @@ def main():
     movimentoY = 0
     velocidade = 1
     direcao = True
-    posicaoXPlayer = 0
-    posicaoYPlayer = 373
+    posicaoXPlayer = 400
+    posicaoYPlayer = 378
     movimentoXPlayer = 0
-    boneco = pygame.image.load("assets/personagem.png")
-    badBurger = pygame.image.load("assets/badburger.png")
+    boneco = pygame.image.load("assets/flint.png")
+    badBurger = pygame.image.load("assets/bad_burguinho.png")
     pygame.mixer.music.load("assets/trilha.mp3")
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
-    larguraPlayer = 101
-    velocidadePlayer = 10
+    larguraPlayer = 65
+    velocidadePlayer = 15
+    pontos = 0
+    pontosMorte = 0
 
     while True:
 
@@ -75,8 +96,11 @@ def main():
 
             gameDisplay.blit(bg, (0,0))
             gameDisplay.blit(boneco, (posicaoXPlayer, posicaoYPlayer))
-            gameDisplay.blit(badBurger, (movimentoX - 68, movimentoY))
+            gameDisplay.blit(badBurger, (movimentoX, movimentoY))
 
+            fonte = pygame.font.Font('freesansbold.ttf', 20)
+            texto = fonte.render("Pontos: "+str(pontos), True, white)
+            gameDisplay.blit(texto, (20, 25))
 
             if direcao == True:
                 if movimentoY <= 480 - 68:
@@ -84,8 +108,29 @@ def main():
                 else:
                     movimentoY = 0
                     movimentoX = random.randrange(0, largura)
-                    velocidade = velocidade + 2
-                    direcao = True
+                    velocidade = velocidade + 1
+                    pontosMorte -= 1
+                    if pontosMorte == -3:
+                        perdeu(pontos)
+                        jogando = False
+                    else:    
+                        direcao = True
+            
+            
+        bonecoRect = boneco.get_rect()
+        bonecoRect.x = posicaoXPlayer
+        bonecoRect.y = posicaoYPlayer   
+
+        burgerRect = badBurger.get_rect()
+        burgerRect.x = movimentoX
+        burgerRect.y = movimentoY
+
+        if burgerRect.colliderect(bonecoRect) == True:
+            movimentoY = 0
+            movimentoX = random.randrange(0, largura)
+            velocidade = velocidade + 1
+            direcao = True
+            pontos += 1
 
 
   
