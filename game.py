@@ -28,16 +28,17 @@ pygameDisplay.set_icon(icone)
 
 white = (255, 255, 255)
 green = (34,139,34)
+red = (255,0,0)
 
 def perdeu(pontos):
     gameDisplay.blit(bg_perdeu, (0,0))
     pygame.mixer.music.stop()
     fonte = pygame.font.Font("freesansbold.ttf", 25)
-    texto = fonte.render("Você Perdeu com "+str(pontos) +" pontos!", True, green)
-    gameDisplay.blit(texto, (450, 90))
+    texto = fonte.render("Você obteve "+str(pontos) +" pontos!", True, green)
+    gameDisplay.blit(texto, (520, 90))
     fonteContinue = pygame.font.Font("freesansbold.ttf", 20)
     textoContinue = fonteContinue.render("press enter to restart", True, green)
-    gameDisplay.blit(textoContinue, (575,115))
+    gameDisplay.blit(textoContinue, (560,115))
 
     pygameDisplay.update()
 
@@ -56,14 +57,14 @@ def main():
     badBurger = pygame.image.load("assets/bad_burguinho.png")
     pygame.mixer.music.load("assets/trilha.mp3")
     pygame.mixer.music.play(-1)
-    pygame.mixer.music.set_volume(0.1)
+    pygame.mixer.music.set_volume(0.5)
     larguraPlayer = 65
     velocidadePlayer = 15
     pontos = 0
     pontosMorte = 0
 
     while True:
-
+           
         for event in gameEvents.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -106,6 +107,10 @@ def main():
             texto = fonte.render("Pontos: "+str(pontos), True, white)
             gameDisplay.blit(texto, (20, 25))
 
+            fonteMorte = pygame.font.Font('freesansbold.ttf', 20)
+            pontosMortetxt = fonteMorte.render("Erros: "+str(pontosMorte), True, red)
+            gameDisplay.blit(pontosMortetxt, (130, 25))
+
             # movimento do hambúrguer
             if direcao == True:
                 if movimentoY <= 480 - 68:
@@ -114,8 +119,8 @@ def main():
                     movimentoY = 0
                     movimentoX = random.randrange(0, largura)
                     velocidade = velocidade + 0.4
-                    pontosMorte -= 1
-                    if pontosMorte == -3:
+                    pontosMorte += 1
+                    if pontosMorte == 3:
                         perdeu(pontos)
                         jogando = False
                     else:    
